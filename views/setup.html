@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>InterviewAssist | Interview Setup</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ================= GLOBAL ================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",sans-serif;
+}
+body{
+  background:linear-gradient(120deg,#ede9fe,#f5f3ff);
+  min-height:100vh;
+}
+
+/* ================= NAVBAR ================= */
+/* ===== NAVBAR ===== */
+.navbar{
+  position:sticky;
+  top:0;
+  width:100%;
+  background:linear-gradient(90deg,#4c1d95,#7c3aed);
+  z-index:1000;
+  box-shadow:0 8px 30px rgba(0,0,0,0.25);
+}
+
+.nav-container{
+  max-width:1300px;
+  margin:auto;
+  padding:14px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* LOGO */
+.nav-logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:22px;
+  font-weight:600;
+  color:#fff;
+}
+
+.logo-box{
+  width:42px;
+  height:42px;
+  background:#fff;
+  color:#4c1d95;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  font-weight:700;
+}
+
+/* LINKS */
+.nav-links{
+  list-style:none;
+  display:flex;
+  gap:28px;
+}
+
+.nav-links li a{
+  color:#e0e7ff;
+  text-decoration:none;
+  font-size:15px;
+  font-weight:500;
+  position:relative;
+  transition:0.3s;
+}
+
+/* Hover underline animation */
+.nav-links li a::after{
+  content:'';
+  position:absolute;
+  width:0%;
+  height:2px;
+  background:#fde68a;
+  left:0;
+  bottom:-6px;
+  transition:0.3s;
+}
+
+.nav-links li a:hover{
+  color:#fff;
+}
+
+.nav-links li a:hover::after{
+  width:100%;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .nav-links{
+    display:none; /* later hamburger add करू शकतो */
+  }
+}
+/* ================= CONTAINER ================= */
+.container{
+  max-width:1100px;
+  margin:40px auto;
+  background:white;
+  border-radius:24px;
+  padding:50px;
+  box-shadow:0 30px 80px rgba(0,0,0,0.12);
+  animation:fadeUp 0.9s ease;
+}
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(20px)}
+  to{opacity:1; transform:translateY(0)}
+}
+
+.container h1{
+  font-size:32px;
+  margin-bottom:10px;
+}
+.container p{
+  color:#6b7280;
+  margin-bottom:40px;
+}
+
+/* ================= SECTION ================= */
+.section{
+  margin-bottom:45px;
+}
+.section h2{
+  font-size:22px;
+  color:#4c1d95;
+  margin-bottom:18px;
+}
+
+/* ================= SUBJECT GRID ================= */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+}
+.subject-card{
+  padding:18px;
+  border-radius:16px;
+  background:#f8fafc;
+  cursor:pointer;
+  text-align:center;
+  font-size:15px;
+  transition:0.3s;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+.subject-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 20px 40px rgba(124,58,237,0.25);
+}
+.subject-card.active{
+  background:#ede9fe;
+  border:2px solid #7c3aed;
+  font-weight:600;
+}
+
+/* ================= OPTIONS ================= */
+.option-group{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+}
+.option{
+  padding:16px 28px;
+  border-radius:30px;
+  background:#f8fafc;
+  cursor:pointer;
+  transition:0.3s;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+.option:hover{
+  transform:translateY(-4px);
+}
+.option.active{
+  background:#7c3aed;
+  color:white;
+  font-weight:600;
+}
+
+/* ================= START BUTTON ================= */
+.start-btn{
+  margin-top:50px;
+  text-align:center;
+}
+.start-btn button{
+  padding:18px 50px;
+  border:none;
+  border-radius:40px;
+  background:#7c3aed;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+  transition:0.3s;
+  box-shadow:0 20px 50px rgba(124,58,237,0.4);
+}
+.start-btn button:hover{
+  background:#6d28d9;
+  transform:translateY(-4px);
+}
+</style>
+</head>
+
+<body>
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+  <div class="nav-container">
+
+    <div class="nav-logo">
+      <div class="logo-box">IA</div>
+      <span>InterviewAssist</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="dashboard.html">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#howItWorks">How It Works</a></li>
+      <li><a href="setup.html">Interview</a></li>
+      <li><a href="result.html">Results</a></li>
+      <li><a href="#developer">Developer</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+  </div>
+</nav>
+<!-- ================= CONTENT ================= -->
+<div class="container">
+
+  <h1>Set Up Your Interview</h1>
+  <p>Choose your preferences before starting the AI interview.</p>
+
+  <!-- CORE CS -->
+  <div class="section">
+    <h2>🔹 Core CS</h2>
+    <div class="grid">
+      <div class="subject-card">DSA</div>
+      <div class="subject-card">OOP</div>
+      <div class="subject-card">Operating System</div>
+      <div class="subject-card">Computer Networks</div>
+      <div class="subject-card">DBMS</div>
+      <div class="subject-card">System Design (Basic)</div>
+    </div>
+  </div>
+
+  <!-- PROGRAMMING -->
+  <div class="section">
+    <h2>🔹 Programming Languages</h2>
+    <div class="grid">
+      <div class="subject-card">Java</div>
+      <div class="subject-card">Python</div>
+      <div class="subject-card">C / C++</div>
+      <div class="subject-card">JavaScript</div>
+    </div>
+  </div>
+
+  <!-- WEB -->
+  <div class="section">
+    <h2>🔹 Web & App Development</h2>
+    <div class="grid">
+      <div class="subject-card">Web Development</div>
+      <div class="subject-card">Frontend (React)</div>
+      <div class="subject-card">Backend (Node / Spring)</div>
+      <div class="subject-card">REST API & Microservices</div>
+    </div>
+  </div>
+
+  <!-- DATA & CLOUD -->
+  <div class="section">
+    <h2>🔹 Data & Cloud</h2>
+    <div class="grid">
+      <div class="subject-card">SQL Optimization</div>
+      <div class="subject-card">NoSQL</div>
+      <div class="subject-card">Cloud (AWS Basics)</div>
+      <div class="subject-card">DevOps Fundamentals</div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW -->
+  <div class="section">
+    <h2>🔹 Interview Specific</h2>
+    <div class="grid">
+      <div class="subject-card">Problem Solving</div>
+      <div class="subject-card">Aptitude & Reasoning</div>
+      <div class="subject-card">HR + Technical</div>
+    </div>
+  </div>
+
+  <!-- DIFFICULTY -->
+  <div class="section">
+    <h2>🎯 Difficulty Level</h2>
+    <div class="option-group">
+      <div class="option">Easy</div>
+      <div class="option active">Medium</div>
+      <div class="option">Hard</div>
+    </div>
+  </div>
+
+  <!-- TYPE -->
+  <div class="section">
+    <h2>🧠 Interview Type</h2>
+    <div class="option-group">
+      <div class="option active">Technical</div>
+      <div class="option">HR</div>
+      <div class="option">Mixed</div>
+    </div>
+  </div>
+
+  <!-- DURATION -->
+  <div class="section">
+    <h2>⏱ Duration</h2>
+    <div class="option-group">
+      <div class="option">10 Min</div>
+      <div class="option active">20 Min</div>
+      <div class="option">30 Min</div>
+    </div>
+  </div>
+
+  <!-- START -->
+  <div class="start-btn">
+    <button onclick="startInterview()">Start AI Interview →</button>
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll('.subject-card, .option').forEach(item=>{
+  item.addEventListener('click',()=>{
+    if(item.classList.contains('option')){
+      item.parentElement.querySelectorAll('.option')
+        .forEach(o=>o.classList.remove('active'));
+      item.classList.add('active');
+    }else{
+      item.classList.toggle('active');
+    }
+  });
+});
+
+function startInterview(){
+  window.location.href="interview.html";
+}
+</script>
+
+</body>
+</html>

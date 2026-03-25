@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>InterviewAssist | Interview History</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== GLOBAL ===== */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+body{
+  background:linear-gradient(-45deg,#ede9fe,#f5f3ff,#ddd6fe);
+  background-size:400% 400%;
+  animation:bgMove 12s ease infinite;
+  min-height:100vh;
+}
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+  position:sticky;
+  top:0;
+  background:linear-gradient(90deg,#4c1d95,#7c3aed);
+  z-index:1000;
+  box-shadow:0 8px 25px rgba(0,0,0,0.25);
+}
+.nav-container{
+  max-width:1300px;
+  margin:auto;
+  padding:14px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.nav-logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#fff;
+  font-size:22px;
+  font-weight:600;
+}
+.logo-box{
+  width:42px;
+  height:42px;
+  background:#fff;
+  color:#4c1d95;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+}
+.nav-links{
+  list-style:none;
+  display:flex;
+  gap:26px;
+}
+.nav-links a{
+  color:#e0e7ff;
+  text-decoration:none;
+  font-size:15px;
+}
+.nav-links a:hover{ color:#fff }
+
+/* ===== PAGE HEADER ===== */
+.header{
+  text-align:center;
+  padding:70px 20px 30px;
+}
+.header h1{
+  font-size:40px;
+  color:#4c1d95;
+}
+.header p{
+  margin-top:8px;
+  color:#6b7280;
+}
+
+/* ===== TABLE ===== */
+.table-wrapper{
+  max-width:1200px;
+  margin:0 auto 80px;
+  padding:0 20px;
+  animation:fadeUp .8s ease;
+}
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(30px)}
+  to{opacity:1; transform:translateY(0)}
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 25px 60px rgba(0,0,0,0.12);
+}
+
+thead{
+  background:#7c3aed;
+  color:#fff;
+}
+th, td{
+  padding:16px 14px;
+  text-align:center;
+  font-size:14px;
+}
+th{
+  font-weight:600;
+  letter-spacing:.3px;
+}
+
+tbody tr{
+  border-bottom:1px solid #e5e7eb;
+  transition:.25s;
+}
+tbody tr:hover{
+  background:#f5f3ff;
+}
+
+.result-pass{ color:#16a34a; font-weight:600; }
+.result-average{ color:#f59e0b; font-weight:600; }
+.result-fail{ color:#dc2626; font-weight:600; }
+
+.view-btn{
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  background:#7c3aed;
+  color:#fff;
+  cursor:pointer;
+  transition:.3s;
+}
+.view-btn:hover{
+  background:#6d28d9;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .nav-links{display:none}
+  table{font-size:13px}
+  th,td{padding:12px 8px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="nav-container">
+
+    <div class="nav-logo">
+      <div class="logo-box">IA</div>
+      <span>InterviewAssist</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="dashboard.html">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#howItWorks">How It Works</a></li>
+      <li><a href="setup.html">Interview</a></li>
+      <li><a href="result.html">Results</a></li>
+      <li><a href="#developer">Developer</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+  </div>
+</nav>
+
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <h1>Interview History</h1>
+  <p>Complete record of your interviews</p>
+</div>
+
+<!-- ===== TABLE ===== -->
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>Topic</th>
+        <th>Interview Type</th>
+        <th>Difficulty</th>
+        <th>Duration</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Result</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>Java</td>
+        <td>Technical</td>
+        <td>Medium</td>
+        <td>20 mins</td>
+        <td>12 Aug 2026</td>
+        <td>10:30 AM</td>
+        <td class="result-pass">78%</td>
+        <td><button class="view-btn" onclick="viewResult(1)">View</button></td>
+      </tr>
+
+      <tr>
+        <td>DSA</td>
+        <td>Technical</td>
+        <td>Hard</td>
+        <td>30 mins</td>
+        <td>10 Aug 2026</td>
+        <td>02:00 PM</td>
+        <td class="result-average">64%</td>
+        <td><button class="view-btn" onclick="viewResult(2)">View</button></td>
+      </tr>
+
+      <tr>
+        <td>HR + Technical</td>
+        <td>Mixed</td>
+        <td>Easy</td>
+        <td>15 mins</td>
+        <td>08 Aug 2026</td>
+        <td>11:15 AM</td>
+        <td class="result-fail">52%</td>
+        <td><button class="view-btn" onclick="viewResult(3)">View</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+function viewResult(id){
+  // later backend id pass करू
+  window.location.href = "result.html";
+}
+</script>
+
+</body>
+</html>

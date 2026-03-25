@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>InterviewAssist | Live Interview</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* ================= GLOBAL ================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",sans-serif;
+}
+
+body{
+  background:linear-gradient(-45deg,#7c3aed,#a78bfa,#ede9fe,#fff6f3);
+  background-size:400% 400%;
+  animation:bgWave 12s ease infinite;
+}
+
+@keyframes bgWave{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* ================= NAVBAR ================= */
+.navbar{
+  position:sticky;
+  top:0;
+  width:100%;
+  background:linear-gradient(90deg,#4c1d95,#7c3aed);
+  z-index:1000;
+  box-shadow:0 8px 30px rgba(0,0,0,0.25);
+}
+
+.nav-container{
+  max-width:1300px;
+  margin:auto;
+  padding:14px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.nav-logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:22px;
+  font-weight:600;
+  color:#fff;
+}
+
+.logo-box{
+  width:42px;
+  height:42px;
+  background:#fff;
+  color:#4c1d95;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  font-weight:700;
+}
+
+.nav-links{
+  list-style:none;
+  display:flex;
+  gap:28px;
+}
+
+.nav-links li a{
+  color:#e0e7ff;
+  text-decoration:none;
+  font-size:15px;
+  position:relative;
+}
+
+.nav-links li a:hover{color:#fff}
+
+/* ================= INTERVIEW LAYOUT ================= */
+.interview-container{
+  max-width:1300px;
+  margin:40px auto;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:30px;
+}
+
+.question-box{
+  background:#fff;
+  border-radius:20px;
+  padding:35px;
+  box-shadow:0 25px 60px rgba(0,0,0,0.15);
+}
+
+.question-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.timer{
+  background:#ede9fe;
+  color:#4c1d95;
+  padding:8px 16px;
+  border-radius:30px;
+  font-weight:600;
+}
+
+.warning{
+  background:#fee2e2;
+  color:#b91c1c;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:14px;
+}
+
+.question-count{
+  margin-bottom:10px;
+  font-weight:600;
+  color:#6b21a8;
+}
+
+.question-text{
+  font-size:20px;
+  margin-bottom:25px;
+  line-height:1.6;
+}
+
+textarea{
+  width:100%;
+  height:120px;
+  border-radius:12px;
+  border:2px solid #ddd;
+  padding:12px;
+  font-size:15px;
+  resize:none;
+}
+
+.controls{
+  display:flex;
+  gap:15px;
+  margin-top:20px;
+}
+
+.controls button{
+  flex:1;
+  padding:14px;
+  border:none;
+  border-radius:30px;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.btn-primary{
+  background:#7c3aed;
+  color:#fff;
+}
+
+.btn-outline{
+  background:#fff;
+  border:2px solid #7c3aed;
+  color:#7c3aed;
+}
+
+/* ================= CAMERA ================= */
+.camera-box{
+  background:rgba(255,255,255,0.9);
+  border-radius:20px;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+video{
+  width:100%;
+  border-radius:50px;
+  background:#000;
+}
+
+.cam-controls{
+  display:flex;
+  gap:15px;
+  margin-top:15px;
+}
+
+.cam-controls button{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:none;
+  font-size:18px;
+  color:#fff;
+}
+
+.cam{background:#16a34a}
+.cam.off{background:#dc2626}
+
+.mic{background:#2563eb}
+.mic.off{background:#dc2626}
+
+.stop{background:#b91c1c}
+
+@media(max-width:900px){
+  .interview-container{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+
+    <div class="nav-logo">
+      <div class="logo-box">IA</div>
+      <span>InterviewAssist</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="dashboard.html">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#howItWorks">How It Works</a></li>
+      <li><a href="setup.html">Interview</a></li>
+      <li><a href="result.html">Results</a></li>
+      <li><a href="#developer">Developer</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+  </div>
+</nav>
+
+<!-- INTERVIEW -->
+<div class="interview-container">
+
+  <!-- LEFT -->
+  <div class="question-box">
+    <div class="question-header">
+      <div class="timer" id="timer">⏱ 10:00</div>
+      <div class="warning" id="warningCount">⚠️ Warnings: 0 / 3</div>
+    </div>
+
+    <div class="question-count" id="qCount">Question 1 of 10</div>
+
+    <div class="question-text" id="questionText"></div>
+
+    <textarea id="answerBox"
+      placeholder="Type your answer here or speak using mic..."></textarea>
+
+    <div class="controls">
+      <button class="btn-outline" onclick="repeatQuestion()">🔊 Repeat</button>
+      <button class="btn-primary" onclick="submitAnswer()">Submit Answer</button>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="camera-box">
+    <h3>Live Camera</h3>
+    <video id="video" autoplay muted></video>
+
+    <div class="cam-controls">
+      <button class="cam" onclick="toggleCamera(this)">
+        <i class="fas fa-video"></i>
+      </button>
+      <button class="mic" onclick="toggleMic(this)">
+        <i class="fas fa-microphone"></i>
+      </button>
+      <button class="stop" onclick="endInterview()">
+        <i class="fas fa-stop"></i>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ================= CAMERA ================= */
+const video = document.getElementById("video");
+
+navigator.mediaDevices.getUserMedia({video:true,audio:true})
+.then(stream=>video.srcObject=stream)
+.catch(()=>alert("Camera/Mic access denied"));
+
+function toggleCamera(btn){
+  btn.classList.toggle("off");
+  video.srcObject.getVideoTracks().forEach(t=>t.enabled=!t.enabled);
+}
+function toggleMic(btn){
+  btn.classList.toggle("off");
+  video.srcObject.getAudioTracks().forEach(t=>t.enabled=!t.enabled);
+}
+
+/* ================= INTERVIEW LOGIC ================= */
+let currentQuestion = 1;
+const TOTAL_QUESTIONS = 10;
+
+function loadQuestion(){
+  document.getElementById("qCount").innerText =
+    `Question ${currentQuestion} of ${TOTAL_QUESTIONS}`;
+
+  const q = `AI Generated Question ${currentQuestion}`;
+  document.getElementById("questionText").innerText = q;
+  speak(q);
+}
+
+function submitAnswer(){
+  document.getElementById("answerBox").value="";
+  currentQuestion++;
+  if(currentQuestion > TOTAL_QUESTIONS){
+    endInterview(true);
+  } else {
+    loadQuestion();
+  }
+}
+
+/* ================= AI VOICE ================= */
+function speak(text){
+  window.speechSynthesis.cancel();
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.lang="en-US";
+  msg.rate=0.95;
+  window.speechSynthesis.speak(msg);
+}
+function repeatQuestion(){
+  speak(document.getElementById("questionText").innerText);
+}
+
+/* ================= END ================= */
+function endInterview(auto=false){
+  if(auto || confirm("End interview and view result?")){
+    window.location.href="result.html";
+  }
+}
+
+/* START */
+loadQuestion();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>InterviewAssist | Result</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+/* ===== GLOBAL ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(-45deg,#ede9fe,#f5f3ff,#ddd6fe,#ede9fe);
+  background-size:400% 400%;
+  animation:bgMove 14s ease infinite;
+}
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+section{padding:80px 6%}
+
+/* ===== NAVBAR (same as dashboard) ===== */
+.navbar{
+  position:sticky;top:0;z-index:1000;
+  background:linear-gradient(90deg,#4c1d95,#7c3aed);
+  box-shadow:0 8px 25px rgba(0,0,0,.25)
+}
+.nav-container{
+  max-width:1300px;margin:auto;
+  padding:14px 24px;
+  display:flex;justify-content:space-between;align-items:center
+}
+.nav-logo{
+  display:flex;align-items:center;gap:12px;
+  color:#fff;font-weight:600;font-size:22px
+}
+.logo-box{
+  width:42px;height:42px;border-radius:10px;
+  background:#fff;color:#4c1d95;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700
+}
+.nav-links{list-style:none;display:flex;gap:26px}
+.nav-links a{
+  color:#e0e7ff;text-decoration:none;font-size:15px;
+  position:relative
+}
+.nav-links a::after{
+  content:"";position:absolute;left:0;bottom:-6px;
+  width:0;height:2px;background:#fde68a;
+  transition:.3s
+}
+.nav-links a:hover::after{width:100%}
+
+/* ===== HEADER ===== */
+.result-header{
+  text-align:center;
+  margin-bottom:60px
+}
+.result-header h1{
+  font-size:44px;color:#4c1d95;margin-bottom:10px
+}
+.result-header p{
+  color:#6b7280;font-size:16px
+}
+
+/* ===== SCORE CARD ===== */
+.score-card{
+  max-width:900px;margin:0 auto 60px;
+  background:#fff;border-radius:22px;
+  padding:40px;
+  box-shadow:0 30px 70px rgba(0,0,0,.12);
+  display:grid;grid-template-columns:1fr 2fr;
+  gap:40px;align-items:center;
+  animation:fadeUp 1s ease
+}
+.score-circle{
+  width:160px;height:160px;border-radius:50%;
+  background:conic-gradient(#7c3aed 0deg,var(--deg),#e5e7eb var(--deg));
+  display:flex;align-items:center;justify-content:center;
+  margin:auto
+}
+.score-circle span{
+  background:#fff;width:120px;height:120px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;font-weight:700;color:#4c1d95
+}
+.score-info h3{
+  font-size:26px;margin-bottom:10px
+}
+.score-info p{color:#6b7280}
+
+/* ===== FEEDBACK GRID ===== */
+.feedback-grid{
+  max-width:1100px;margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px
+}
+.feedback-card{
+  background:#fff;
+  border-radius:22px;
+  padding:35px;
+  box-shadow:0 25px 60px rgba(0,0,0,.1);
+  animation:fadeUp 1.2s ease
+}
+.feedback-card h3{
+  font-size:22px;
+  margin-bottom:20px;
+  color:#4c1d95
+}
+.feedback-card ul{
+  list-style:none
+}
+.feedback-card li{
+  margin-bottom:14px;
+  color:#374151;
+  line-height:1.5;
+  display:flex;gap:10px
+}
+.feedback-card li::before{
+  content:"✔";
+  color:#7c3aed;
+  font-weight:700
+}
+
+/* ===== BUTTONS ===== */
+.result-actions{
+  text-align:center;margin-top:60px
+}
+.result-actions a{
+  display:inline-block;
+  padding:14px 32px;
+  margin:0 10px;
+  border-radius:30px;
+  text-decoration:none;
+  font-size:15px;
+  transition:.3s
+}
+.btn-primary{
+  background:#7c3aed;color:#fff
+}
+.btn-primary:hover{
+  background:#6d28d9;transform:translateY(-3px)
+}
+.btn-outline{
+  border:2px solid #7c3aed;color:#7c3aed
+}
+.btn-outline:hover{
+  background:#7c3aed;color:#fff
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .score-card{grid-template-columns:1fr;text-align:center}
+  .feedback-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-logo">
+      <div class="logo-box">IA</div>
+      <span>InterviewAssist</span>
+    </div>
+     <ul class="nav-links">
+      <li><a href="dashboard.html">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#howItWorks">How It Works</a></li>
+      <li><a href="setup.html">Interview</a></li>
+      <li><a href="result.html">Results</a></li>
+      <li><a href="#developer">Developer</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section>
+
+  <!-- HEADER -->
+  <div class="result-header">
+    <h1>Interview Result</h1>
+    <p>AI-generated evaluation based on your interview performance</p>
+  </div>
+
+  <!-- SCORE -->
+  <div class="score-card">
+    <div class="score-circle" style="--deg:280deg">
+      <span>78%</span>
+    </div>
+    <div class="score-info">
+      <h3>Overall Performance</h3>
+      <p>
+        Your interview performance was analyzed using communication clarity,
+        technical accuracy, confidence, and response structure.
+      </p>
+    </div>
+  </div>
+
+  <!-- FEEDBACK -->
+  <div class="feedback-grid">
+
+    <!-- LEFT -->
+    <div class="feedback-card">
+      <h3>Key Improvements</h3>
+      <ul>
+        <li>Provide more structured answers for complex technical questions.</li>
+        <li>Improve clarity while explaining problem-solving approaches.</li>
+        <li>Reduce hesitation during follow-up questions.</li>
+        <li>Use real-world examples to strengthen explanations.</li>
+      </ul>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="feedback-card">
+      <h3>Detailed Feedback</h3>
+      <ul>
+        <li>Your technical fundamentals are strong and mostly accurate.</li>
+        <li>Communication skills are clear but can be more confident.</li>
+        <li>You handled logical questions with good reasoning.</li>
+        <li>Overall performance shows good interview readiness.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="result-actions">
+    <a href="setup.html" class="btn-primary">Retry Interview</a>
+    <a href="dashboard.html" class="btn-outline">Back to Dashboard</a>
+  </div>
+
+</section>
+
+</body>
+</html>

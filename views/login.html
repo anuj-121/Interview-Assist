@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>InterviewAssist | Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ================= GLOBAL ================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI", sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(270deg,#ede9fe,#ddd6fe,#f5d0fe);
+  background-size:600% 600%;
+  animation:bgMove 14s ease infinite;
+}
+
+/* Background animation */
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* ================= MAIN CARD ================= */
+.container{
+  width:900px;
+  height:520px;
+  background:#fff;
+  border-radius:24px;
+  display:flex;
+  overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.18);
+  animation:cardEnter .9s cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes cardEnter{
+  from{opacity:0; transform:scale(.95) translateY(30px)}
+  to{opacity:1; transform:none}
+}
+
+/* ================= LEFT FORM ================= */
+.form-section{
+  width:50%;
+  padding:40px 50px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+/* Logo */
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:40px;
+}
+.logo-box{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  background:#7c3aed;
+  color:#fff;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.logo span{
+  font-size:18px;
+  font-weight:600;
+  color:#4c1d95;
+}
+
+/* Text */
+.form-section h2{
+  font-size:26px;
+  margin-bottom:6px;
+}
+.form-section p{
+  color:#6b7280;
+  margin-bottom:30px;
+  font-size:14px;
+}
+
+/* Inputs */
+.field{
+  margin-bottom:22px;
+}
+.field label{
+  font-size:13px;
+  color:#6b7280;
+}
+.field input{
+  width:100%;
+  border:none;
+  border-bottom:2px solid #e5e7eb;
+  padding:10px 4px;
+  font-size:15px;
+  outline:none;
+  transition:.3s;
+}
+.field input:focus{
+  border-color:#7c3aed;
+}
+
+/* Button */
+.btn{
+  margin-top:10px;
+  padding:13px;
+  border:none;
+  border-radius:12px;
+  background:#7c3aed;
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+  transition:.35s cubic-bezier(.4,0,.2,1);
+}
+.btn:hover{
+  background:#6d28d9;
+  transform:translateY(-2px);
+  box-shadow:0 10px 30px rgba(124,58,237,.35);
+}
+
+/* Toggle */
+.toggle{
+  margin-top:18px;
+  font-size:14px;
+}
+.toggle span{
+  color:#7c3aed;
+  cursor:pointer;
+  font-weight:600;
+}
+
+/* ================= RIGHT PANEL ================= */
+.visual{
+  width:50%;
+  background:linear-gradient(135deg,#7c3aed,#a78bfa);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:40px;
+}
+
+.visual h1{
+  font-size:34px;
+  margin-bottom:12px;
+}
+.visual p{
+  font-size:15px;
+  opacity:.9;
+  line-height:1.6;
+}
+
+/* ================= TRANSITION ================= */
+.login-exit{
+  animation:loginExit .7s cubic-bezier(.4,0,.2,1) forwards;
+}
+
+@keyframes loginExit{
+  to{
+    opacity:0;
+    transform:scale(.94) translateY(20px);
+  }
+}
+
+/* Overlay */
+#transitionOverlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#7c3aed,#a78bfa,#c4b5fd);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .6s ease;
+  z-index:999;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LEFT -->
+  <div class="form-section">
+
+    <div class="logo">
+      <div class="logo-box">IA</div>
+      <span>InterviewAssist</span>
+    </div>
+
+    <h2>Welcome Back</h2>
+    <p>Prepare smart. Perform confidently.</p>
+
+    <div class="field">
+      <label>Email</label>
+      <input type="email" placeholder="you@example.com">
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <input type="password" placeholder="••••••••">
+    </div>
+
+    <button class="btn" onclick="login()">Log In</button>
+
+    <div class="toggle">
+      Don’t have an account?
+      <span>Sign up</span>
+    </div>
+
+  </div>
+
+  <!-- RIGHT -->
+  <div class="visual">
+    <div>
+      <h1>InterviewAssist</h1>
+      <p>
+        AI-powered interview practice platform<br>
+        with real-time questions and instant feedback.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Overlay -->
+<div id="transitionOverlay"></div>
+
+<script>
+function login(){
+  const card = document.querySelector('.container');
+  const overlay = document.getElementById('transitionOverlay');
+
+  card.classList.add('login-exit');
+
+  setTimeout(()=>{
+    overlay.style.opacity = "1";
+  },300);
+
+  setTimeout(()=>{
+    window.location.href = "dashboard.html";
+  },900);
+}
+</script>
+
+</body>
+</html>
