@@ -1,4 +1,4 @@
-const User = require("../backend/ai/config/models/User");
+const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
 // Register
@@ -28,5 +28,8 @@ exports.login = async (req, res) => {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  res.json({ success: true, userId: user._id });
+  res.json({
+    success: true,
+    userId: user._id
+  });
 };

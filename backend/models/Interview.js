@@ -6,7 +6,7 @@ const interviewSchema = new mongoose.Schema({
   difficulty: String,
   duration: Number,
 
-  question: String, // 🔥 important
+  question: String,
 
   score: Number,
   feedback: {

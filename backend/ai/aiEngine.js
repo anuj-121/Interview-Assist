@@ -1,9 +1,9 @@
 const fetch = require("node-fetch");
 
-// 🔥 AI Question
+// 🔥 Generate Question
 exports.generateQuestion = async (subject, difficulty = "Medium") => {
   try {
-    const prompt = `Ask 1 ${difficulty} interview question on ${subject}`;
+    const prompt = `Ask 1 ${difficulty} level interview question on ${subject}`;
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -21,13 +21,13 @@ exports.generateQuestion = async (subject, difficulty = "Medium") => {
     return data.choices[0].message.content;
 
   } catch (err) {
-    console.error(err);
+    console.error("AI Error:", err);
     return "Error generating question";
   }
 };
 
 
-// 🔥 AI Evaluation
+// 🔥 Evaluate Answer
 exports.evaluateAnswer = async (question, answer) => {
   try {
     const prompt = `
@@ -70,10 +70,10 @@ exports.evaluateAnswer = async (question, answer) => {
     }
 
   } catch (err) {
-    console.error(err);
+    console.error("Evaluation Error:", err);
     return {
       score: 70,
-      keyImprovements: ["Error"],
+      keyImprovements: ["Error occurred"],
       detailedFeedback: ["Try again"]
     };
   }

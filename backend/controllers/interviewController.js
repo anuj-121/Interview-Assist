@@ -23,6 +23,7 @@ exports.startInterview = async (req, res) => {
     });
 
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Error starting interview" });
   }
 };
@@ -48,18 +49,24 @@ exports.submitAnswer = async (req, res) => {
     });
 
   } catch (err) {
-    res.status(500).json({ message: "Error evaluating" });
+    console.error(err);
+    res.status(500).json({ message: "Evaluation error" });
   }
 };
 
 
 // Get Result
 exports.getResult = async (req, res) => {
-  const interview = await Interview.findById(req.params.id);
+  try {
+    const interview = await Interview.findById(req.params.id);
 
-  res.json({
-    score: interview.score,
-    keyImprovements: interview.feedback?.keyImprovements || [],
-    detailedFeedback: interview.feedback?.detailedFeedback || []
-  });
+    res.json({
+      score: interview.score,
+      keyImprovements: interview.feedback?.keyImprovements || [],
+      detailedFeedback: interview.feedback?.detailedFeedback || []
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching result" });
+  }
 };

@@ -5,7 +5,7 @@ const {
   startInterview,
   submitAnswer,
   getResult
-} = require("../../../controllers/interviewController");
+} = require("../controllers/interviewController");
 
 router.post("/start", startInterview);
 router.post("/submit", submitAnswer);
