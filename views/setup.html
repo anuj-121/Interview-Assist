@@ -205,7 +205,56 @@ body{
   background:#6d28d9;
   transform:translateY(-4px);
 }
+
+/* ================= PROFILE MENU ================= */
+.profile-menu{
+  position:relative;
+}
+.profile-dropdown{
+  position:absolute;
+  top:120%;
+  right:0;
+  background:#fff;
+  padding:12px;
+  border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+  display:none;
+  min-width:120px;
+  text-align:center;
+}
+.profile-menu:hover .profile-dropdown{
+  display:block;
+}
+.profile-dropdown a,
+.profile-dropdown button{
+  display:block;
+  width:100%;
+  padding:8px 16px;
+  margin-bottom:4px;
+  border-radius:6px;
+  cursor:pointer;
+  text-decoration:none;
+  border:none;
+  font-weight:600;
+  transition:0.3s;
+}
+.profile-dropdown a{
+  background:#7c3aed;
+  color:#fff;
+}
+.profile-dropdown a:hover{
+  background:#6d28d9;
+}
+.profile-dropdown button{
+  background:#dc2626;
+  color:#fff;
+}
+.profile-dropdown button:hover{
+  background:#b91c1c
+}
+
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -218,15 +267,17 @@ body{
       <span>InterviewAssist</span>
     </div>
 
-    <ul class="nav-links">
+        <ul class="nav-links">
       <li><a href="dashboard.html">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#features">Features</a></li>
-      <li><a href="#howItWorks">How It Works</a></li>
       <li><a href="setup.html">Interview</a></li>
-      <li><a href="result.html">Results</a></li>
-      <li><a href="#developer">Developer</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="history.html">History</a></li>
+      <li class="profile-menu">
+        <a href="#"><i class="fas fa-user-circle" style="font-size:18px;"></i></a>
+        <div class="profile-dropdown">
+          <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+          <button onclick="logout()">Logout</button>
+        </div>
+      </li>
     </ul>
 
   </div>
@@ -325,27 +376,93 @@ body{
 
   <!-- START -->
   <div class="start-btn">
-    <button onclick="startInterview()">Start AI Interview →</button>
-  </div>
+<button onclick="startInterview()">Start AI Interview</button>  </div>
 
 </div>
-
 <script>
+
+// ================= SELECT HANDLING =================
+let selectedSubject = "Java";
+let selectedDifficulty = "Medium";
+
 document.querySelectorAll('.subject-card, .option').forEach(item=>{
   item.addEventListener('click',()=>{
+
+    // 🎯 Difficulty select
     if(item.classList.contains('option')){
       item.parentElement.querySelectorAll('.option')
         .forEach(o=>o.classList.remove('active'));
       item.classList.add('active');
-    }else{
-      item.classList.toggle('active');
+
+      selectedDifficulty = item.innerText.trim();
     }
+
+    // 🎯 Subject select
+    else{
+      document.querySelectorAll('.subject-card')
+        .forEach(s=>s.classList.remove('active'));
+
+      item.classList.add('active');
+      selectedSubject = item.innerText.trim();
+    }
+
   });
 });
 
-function startInterview(){
-  window.location.href="interview.html";
+
+// ================= START INTERVIEW =================
+async function startInterview(){
+
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+
+  if (!userId || !token) {
+    alert("Please login first ❌");
+    window.location.href = "login.html";
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:5000/api/interview/start", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        subject: selectedSubject,
+        difficulty: selectedDifficulty,
+        duration: 20
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+
+      // 🔥 Save data
+      localStorage.setItem("interviewId", data.interviewId);
+      localStorage.setItem("questions", JSON.stringify(data.questions));
+
+      // 🚀 Go to interview page
+      window.location.href = "interview.html";
+
+    } else {
+      alert("Failed to start interview ❌");
+    }
+
+  } catch(err){
+    console.error(err);
+    alert("Server error ❌");
+  }
 }
+
+/* ================= LOGOUT ================= */
+function logout(){
+  localStorage.removeItem("userId");
+  window.location.href = "login.html";
+}
+
 </script>
 
 </body>

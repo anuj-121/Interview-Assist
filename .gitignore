@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+
+# Environment files
+.env
+backend/.env
+
+# Logs
+*.log
+server-debug.log
+server-debug.err
+
+# Uploads
+backend/uploads/
+uploads/

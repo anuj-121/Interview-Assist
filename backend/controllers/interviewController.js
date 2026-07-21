@@ -1,72 +1,189 @@
-const Interview = require("../models/Interview");
+const db = require("../config/db");
 const ai = require("../ai/aiEngine");
 
-// Start Interview
+// ================= START INTERVIEW =================
 exports.startInterview = async (req, res) => {
   try {
-    const { userId, subject, difficulty, duration } = req.body;
 
-    const question = await ai.generateQuestion(subject, difficulty);
+    const { subject, difficulty } = req.body;
+    const userId = req.user?.id;
 
-    const interview = await Interview.create({
-      userId,
-      subject,
-      difficulty,
-      duration,
-      question
-    });
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    // 🔥 SAFE QUESTION ARRAY
+    let questions = [
+      `Explain ${subject} (${difficulty})`,
+      `What are the advantages of ${subject}?`,
+      `Describe a real-world use case for ${subject}.`,
+      `What are the common pitfalls when working with ${subject}?`,
+      `Can you give an example of optimizing ${subject}?`,
+      `What are the security considerations for ${subject}?`,
+      `How would you test a system involving ${subject}?`,
+      `What are the latest trends or updates in ${subject}?`,
+      `How does ${subject} handle scalability?`,
+      `Describe the architecture of a ${subject} application.`
+    ];
+
+    try {
+      const aiQs = await ai.generateQuestions(subject, difficulty);
+      if (aiQs && aiQs.length === 10) questions = aiQs;
+    } catch (err) {
+      console.log("AI failed, fallback array used");
+    }
+
+    const [result] = await db.promise().query(
+      "INSERT INTO interviews (user_id, subject, difficulty, question, answer, score) VALUES (?, ?, ?, ?, ?, ?)",
+      [userId, subject, difficulty, JSON.stringify(questions), JSON.stringify([]), 0]
+    );
 
     res.json({
       success: true,
-      interviewId: interview._id,
-      question
+      interviewId: result.insertId,
+      questions // send array explicitly to frontend
     });
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error starting interview" });
+    console.error("START ERROR:", err);
+    res.status(500).json({ success: false });
   }
 };
 
 
-// Submit Answer
+// ================= SUBMIT ANSWER =================
 exports.submitAnswer = async (req, res) => {
   try {
-    const { interviewId, answer } = req.body;
 
-    const interview = await Interview.findById(interviewId);
+    const { interviewId, answer, questionIndex } = req.body;
 
-    const result = await ai.evaluateAnswer(interview.question, answer);
+    const [rows] = await db.promise().query(
+      "SELECT user_id, question, answer, score FROM interviews WHERE id = ? AND user_id = ?",
+      [interviewId, req.user?.id]
+    );
 
-    await Interview.findByIdAndUpdate(interviewId, {
-      score: result.score,
-      feedback: result
+    if(rows.length === 0){
+      return res.status(404).json({ success: false, message: "Interview not found" });
+    }
+
+    const dbQuestions = JSON.parse(rows[0].question || "[]");
+    const dbAnswers = JSON.parse(rows[0].answer || "[]");
+    
+    // Evaluate answer using the current index's question
+    const currentQuestionText = dbQuestions[questionIndex];
+    let evalResult;
+
+    try {
+      evalResult = await ai.evaluateAnswer(currentQuestionText, answer);
+    } catch {
+      evalResult = { score: 70, keyImprovements: ["N/A"], detailedFeedback: ["N/A"] }; 
+    }
+
+    // Add this answer object
+    dbAnswers.push({
+      answerText: answer,
+      score: evalResult.score,
+      keyImprovements: evalResult.keyImprovements || [],
+      detailedFeedback: evalResult.detailedFeedback || []
     });
+
+    const isComplete = dbAnswers.length >= dbQuestions.length;
+    
+    // Compute average score 
+    const sumScore = dbAnswers.reduce((sum, item) => sum + item.score, 0);
+    const avgScore = isComplete ? Math.round(sumScore / dbAnswers.length) : Math.round(sumScore / dbAnswers.length);
+
+    await db.promise().query(
+      "UPDATE interviews SET answer = ?, score = ? WHERE id = ?",
+      [JSON.stringify(dbAnswers), avgScore, interviewId]
+    );
 
     res.json({
       success: true,
-      result
+      isComplete,
+      result: evalResult, // Just returning the current evaluation so we can display it or skip
+      totalScore: avgScore,
+      allAnswers: dbAnswers // Can be parsed dynamically for final result page
     });
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Evaluation error" });
+    console.error("SUBMIT ERROR:", err);
+    res.status(500).json({ success: false });
   }
 };
 
 
-// Get Result
+// ================= GET RESULT =================
 exports.getResult = async (req, res) => {
   try {
-    const interview = await Interview.findById(req.params.id);
+    const interviewId = req.params.id;
+    const userId = req.user?.id;
+
+    const [rows] = await db.promise().query(
+      "SELECT score, answer FROM interviews WHERE id = ? AND user_id = ?",
+      [interviewId, userId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Interview not found" });
+    }
+
+    const answers = JSON.parse(rows[0].answer || "[]");
 
     res.json({
-      score: interview.score,
-      keyImprovements: interview.feedback?.keyImprovements || [],
-      detailedFeedback: interview.feedback?.detailedFeedback || []
+      success: true,
+      score: rows[0].score || 0,
+      allAnswers: answers
     });
 
   } catch (err) {
-    res.status(500).json({ message: "Error fetching result" });
+    console.error("RESULT ERROR:", err);
+    res.status(500).json({ success: false });
+  }
+};
+
+
+// ================= GET DASHBOARD =================
+exports.getDashboard = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const [rows] = await db.promise().query(
+      "SELECT id, subject, score, created_at FROM interviews WHERE user_id = ? ORDER BY created_at DESC",
+      [userId]
+    );
+
+    let total = rows.length;
+    let lastScore = rows.length > 0 ? rows[0].score : 0;
+    
+    res.json({
+      success: true,
+      total,
+      lastScore,
+      history: rows
+    });
+
+  } catch (err) {
+    console.error("DASHBOARD ERROR:", err);
+    res.status(500).json({ success: false });
+  }
+};
+
+// ================= GET HISTORY =================
+exports.getHistory = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const [rows] = await db.promise().query(
+      "SELECT id, subject, difficulty, score, created_at FROM interviews WHERE user_id = ? ORDER BY created_at DESC",
+      [userId]
+    );
+
+    res.json({
+      success: true,
+      history: rows
+    });
+
+  } catch (err) {
+    console.error("HISTORY ERROR:", err);
+    res.status(500).json({ success: false });
   }
 };

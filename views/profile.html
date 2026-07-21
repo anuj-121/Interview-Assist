@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>InterviewAssist | Profile</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* GLOBAL */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+html{
+  scroll-behavior:smooth;
+}
+body{
+  margin:0;
+  font-family:'Segoe UI', sans-serif;
+  background:linear-gradient(-45deg,#7c3aed,#a78bfa,#ede9fe,#f5f3ff);
+  background-size:400% 400%;
+  animation:bgWave 12s ease infinite;
+}
+
+@keyframes bgWave{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* NAVBAR */
+.navbar{
+  position:sticky;
+  top:0;
+  width:100%;
+  background:linear-gradient(90deg,#4c1d95,#7c3aed);
+  z-index:1000;
+  box-shadow:0 8px 30px rgba(0,0,0,0.25);
+}
+
+.nav-container{
+  max-width:1300px;
+  margin:auto;
+  padding:14px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.nav-logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:22px;
+  font-weight:600;
+  color:#fff;
+}
+
+.logo-box{
+  width:42px;
+  height:42px;
+  background:#fff;
+  color:#4c1d95;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  font-weight:700;
+}
+
+.nav-links{
+  list-style:none;
+  display:flex;
+  gap:28px;
+}
+
+.nav-links li a{
+  color:#e0e7ff;
+  text-decoration:none;
+  font-size:15px;
+  font-weight:500;
+  position:relative;
+  transition:0.3s;
+}
+
+.nav-links li a::after{
+  content:'';
+  position:absolute;
+  width:0%;
+  height:2px;
+  background:#fde68a;
+  left:0;
+  bottom:-6px;
+  transition:0.3s;
+}
+
+.nav-links li a:hover{
+  color:#fff;
+}
+
+.nav-links li a:hover::after{
+  width:100%;
+}
+
+.profile-menu{
+  position:relative;
+}
+
+.profile-dropdown{
+  position:absolute;
+  top:120%;
+  right:0;
+  background:#fff;
+  padding:12px;
+  border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+  display:none;
+  min-width:150px;
+  text-align:center;
+}
+
+.profile-menu:hover .profile-dropdown{
+  display:block;
+}
+
+.profile-dropdown a,
+.profile-dropdown button{
+  display:block;
+  width:100%;
+  padding:8px 16px;
+  margin-bottom:4px;
+  border-radius:6px;
+  cursor:pointer;
+  text-decoration:none;
+  border:none;
+  font-weight:600;
+  transition:0.3s;
+}
+
+.profile-dropdown a{
+  background:#7c3aed;
+  color:#fff;
+}
+
+.profile-dropdown a:hover{
+  background:#6d28d9;
+}
+
+.profile-dropdown button{
+  background:#dc2626;
+  color:#fff;
+}
+
+.profile-dropdown button:hover{
+  background:#b91c1c;
+}
+
+/* MAIN CONTENT */
+.profile-container{
+  max-width:1000px;
+  margin:60px auto;
+  padding:0 24px;
+}
+
+/* PROFILE HEADER */
+.profile-header{
+  background:#fff;
+  border-radius:15px;
+  padding:40px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.1);
+  display:flex;
+  align-items:center;
+  gap:40px;
+  margin-bottom:30px;
+}
+
+.profile-avatar{
+  width:140px;
+  height:140px;
+  background:linear-gradient(135deg,#7c3aed,#a78bfa);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:60px;
+  flex-shrink:0;
+}
+
+.profile-info h1{
+  font-size:32px;
+  color:#111827;
+  margin-bottom:8px;
+}
+
+.profile-info p{
+  font-size:16px;
+  color:#6b7280;
+  margin-bottom:12px;
+}
+
+.profile-date{
+  font-size:14px;
+  color:#9ca3af;
+}
+
+/* PROFILE SECTIONS */
+.profile-section{
+  background:#fff;
+  border-radius:15px;
+  padding:30px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.1);
+  margin-bottom:30px;
+}
+
+.section-title{
+  font-size:20px;
+  font-weight:700;
+  color:#111827;
+  margin-bottom:20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.section-title i{
+  color:#7c3aed;
+  font-size:22px;
+}
+
+/* BASIC INFO */
+.info-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.info-item{
+  display:flex;
+  flex-direction:column;
+}
+
+.info-label{
+  font-size:12px;
+  color:#9ca3af;
+  font-weight:600;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+
+.info-value{
+  font-size:16px;
+  color:#111827;
+  font-weight:500;
+}
+
+/* RESUME SECTION */
+.resume-upload-area{
+  border:2px dashed #e5e7eb;
+  border-radius:10px;
+  padding:30px;
+  text-align:center;
+  cursor:pointer;
+  transition:0.3s;
+  background:#f9fafb;
+}
+
+.resume-upload-area:hover{
+  border-color:#7c3aed;
+  background:#f5f3ff;
+}
+
+.resume-upload-area input{
+  display:none;
+}
+
+.upload-icon{
+  font-size:40px;
+  color:#7c3aed;
+  margin-bottom:10px;
+}
+
+.upload-text{
+  font-size:16px;
+  font-weight:600;
+  color:#111827;
+  margin-bottom:4px;
+}
+
+.upload-hint{
+  font-size:14px;
+  color:#6b7280;
+}
+
+/* RESUME DISPLAY */
+.resume-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px;
+  background:#f9fafb;
+  border-radius:10px;
+  margin-top:15px;
+}
+
+.resume-info{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.resume-file-icon{
+  width:50px;
+  height:50px;
+  background:linear-gradient(135deg,#fbbf24,#f59e0b);
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:24px;
+}
+
+.resume-details h4{
+  font-size:16px;
+  font-weight:600;
+  color:#111827;
+  margin-bottom:4px;
+}
+
+.resume-details p{
+  font-size:13px;
+  color:#6b7280;
+}
+
+.resume-actions{
+  display:flex;
+  gap:10px;
+}
+
+.resume-actions button{
+  padding:8px 16px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.3s;
+  font-size:13px;
+}
+
+.btn-view{
+  background:#7c3aed;
+  color:#fff;
+}
+
+.btn-view:hover{
+  background:#6d28d9;
+}
+
+.btn-delete{
+  background:#fee2e2;
+  color:#dc2626;
+}
+
+.btn-delete:hover{
+  background:#fecaca;
+}
+
+/* BUTTONS */
+.btn-save{
+  background:#7c3aed;
+  color:#fff;
+  border:none;
+  padding:12px 32px;
+  border-radius:8px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.btn-save:hover{
+  background:#6d28d9;
+  transform:translateY(-2px);
+  box-shadow:0 10px 20px rgba(124,58,237,0.3);
+}
+
+.btn-cancel{
+  background:#e5e7eb;
+  color:#111827;
+  border:none;
+  padding:12px 32px;
+  border-radius:8px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+  margin-left:10px;
+}
+
+.btn-cancel:hover{
+  background:#d1d5db;
+}
+
+.action-buttons{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:20px;
+}
+
+/* NO RESUME */
+.no-resume{
+  text-align:center;
+  padding:20px;
+  color:#6b7280;
+  font-size:14px;
+}
+
+/* EDIT MODE */
+.edit-mode .info-value{
+  background:#f9fafb;
+  padding:10px;
+  border:1px solid #e5e7eb;
+  border-radius:6px;
+  font-weight:400;
+}
+
+.edit-mode input{
+  width:100%;
+  padding:10px;
+  border:1px solid #e5e7eb;
+  border-radius:6px;
+  font-size:16px;
+}
+
+/* RESPONSIVENESS */
+@media(max-width:900px){
+  .nav-links{
+    display:none;
+  }
+  .profile-header{
+    flex-direction:column;
+    text-align:center;
+  }
+  .info-grid{
+    grid-template-columns:1fr;
+  }
+  .profile-container{
+    margin:40px auto;
+  }
+}
+
+/* MESSAGE */
+.message{
+  padding:15px;
+  border-radius:8px;
+  margin-bottom:20px;
+  display:none;
+}
+
+.message.success{
+  background:#dcfce7;
+  color:#166534;
+  border:1px solid #86efac;
+}
+
+.message.error{
+  background:#fee2e2;
+  color:#991b1b;
+  border:1px solid #fca5a5;
+}
+
+.message.show{
+  display:block;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-logo">
+      <div class="logo-box">IA</div>
+      <span>InterviewAssist</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="dashboard.html">Home</a></li>
+      <li><a href="setup.html">Interview</a></li>
+      <li><a href="history.html">History</a></li>
+      <li class="profile-menu">
+        <a href="#"><i class="fas fa-user-circle" style="font-size:18px;"></i></a>
+        <div class="profile-dropdown">
+          <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+          <button onclick="logout()">Logout</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="profile-container">
+  
+  <!-- MESSAGE -->
+  <div id="message" class="message"></div>
+
+  <!-- PROFILE HEADER -->
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <i class="fas fa-user"></i>
+    </div>
+    <div class="profile-info">
+      <h1 id="displayName">Loading...</h1>
+      <p id="displayEmail"></p>
+      <p class="profile-date">Joined: <span id="joinDate">-</span></p>
+    </div>
+  </div>
+
+  <!-- BASIC INFO SECTION -->
+  <div class="profile-section">
+    <div class="section-title">
+      <i class="fas fa-id-card"></i> Personal Information
+    </div>
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="info-label">Full Name</span>
+        <span class="info-value" id="nameValue">-</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Email Address</span>
+        <span class="info-value" id="emailValue">-</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUME SECTION -->
+  <div class="profile-section">
+    <div class="section-title">
+      <i class="fas fa-file-pdf"></i> Resume
+    </div>
+    
+    <!-- UPLOAD AREA -->
+    <div class="resume-upload-area" onclick="document.getElementById('resumeInput').click()">
+      <input type="file" id="resumeInput" accept=".pdf,.doc,.docx" onchange="handleResumeSelect(event)">
+      <div class="upload-icon">
+        <i class="fas fa-cloud-upload-alt"></i>
+      </div>
+      <div class="upload-text">Click to upload or drag and drop</div>
+      <div class="upload-hint">PDF, DOC or DOCX (Max 5MB)</div>
+    </div>
+
+    <!-- CURRENT RESUME -->
+    <div id="resumeContainer"></div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="action-buttons">
+      <button class="btn-cancel" onclick="resetForm()">Cancel</button>
+      <button class="btn-save" onclick="saveProfile()">Save Changes</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const API_URL = "http://localhost:5000/api";
+  let selectedFile = null;
+
+  // ============ LOAD PROFILE ============
+  function loadProfile() {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    
+    if (!token || !userId) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    // Get user from localStorage (already available from login)
+    const name = localStorage.getItem('userName');
+    const email = localStorage.getItem('userEmail');
+    const createdAt = localStorage.getItem('userCreatedAt');
+
+    // Display profile info
+    document.getElementById('displayName').textContent = name || 'User';
+    document.getElementById('displayEmail').textContent = email || '';
+    document.getElementById('nameValue').textContent = name || '-';
+    document.getElementById('emailValue').textContent = email || '-';
+    
+    if (createdAt) {
+      const date = new Date(createdAt);
+      document.getElementById('joinDate').textContent = date.toLocaleDateString();
+    }
+
+    // Load resume if exists
+    loadResume();
+  }
+
+  // ============ LOAD RESUME ============
+  function loadResume() {
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+
+    fetch(`${API_URL}/auth/profile/${userId}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success && data.resume) {
+        displayResume(data.resume);
+      } else {
+        document.getElementById('resumeContainer').innerHTML = '<div class="no-resume">No resume uploaded yet</div>';
+      }
+    })
+    .catch(err => console.log('Error loading resume:', err));
+  }
+
+  // ============ DISPLAY RESUME ============
+  function displayResume(resumeData) {
+    const container = document.getElementById('resumeContainer');
+    const resumeURL = resumeData.url || resumeData;
+    
+    container.innerHTML = `
+      <div class="resume-item">
+        <div class="resume-info">
+          <div class="resume-file-icon">
+            <i class="fas fa-file-pdf"></i>
+          </div>
+          <div class="resume-details">
+            <h4>${resumeData.filename || 'Resume'}</h4>
+            <p>Uploaded: ${new Date(resumeData.uploadedAt).toLocaleDateString()}</p>
+          </div>
+        </div>
+        <div class="resume-actions">
+          <button class="btn-view" onclick="viewResume('${resumeURL}')">
+            <i class="fas fa-eye"></i> View
+          </button>
+          <button class="btn-delete" onclick="deleteResume()">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // ============ HANDLE RESUME SELECT ============
+  function handleResumeSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+
+    if (!allowedTypes.includes(file.type)) {
+      showMessage('Please upload PDF or DOC/DOCX file', 'error');
+      return;
+    }
+
+    if (file.size > maxSize) {
+      showMessage('File size must be less than 5MB', 'error');
+      return;
+    }
+
+    selectedFile = file;
+    showMessage(`Resume selected: ${file.name}`, 'success');
+  }
+
+  // ============ VIEW RESUME ============
+  function viewResume(url) {
+    window.open(url, '_blank');
+  }
+
+  // ============ DELETE RESUME ============
+  function deleteResume() {
+    if (!confirm('Are you sure you want to delete your resume?')) return;
+
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+
+    fetch(`${API_URL}/auth/profile/${userId}/resume`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        showMessage('Resume deleted successfully', 'success');
+        selectedFile = null;
+        document.getElementById('resumeInput').value = '';
+        loadResume();
+      } else {
+        showMessage('Error deleting resume', 'error');
+      }
+    })
+    .catch(err => {
+      console.error('Error:', err);
+      showMessage('Error deleting resume', 'error');
+    });
+  }
+
+  // ============ SAVE PROFILE ============
+  function saveProfile() {
+    if (!selectedFile) {
+      showMessage('Please select a resume file to upload', 'error');
+      return;
+    }
+
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    
+    const formData = new FormData();
+    formData.append('resume', selectedFile);
+
+    fetch(`${API_URL}/auth/profile/${userId}/resume`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        showMessage('Resume uploaded successfully!', 'success');
+        selectedFile = null;
+        document.getElementById('resumeInput').value = '';
+        setTimeout(() => loadResume(), 1000);
+      } else {
+        showMessage(data.message || 'Error uploading resume', 'error');
+      }
+    })
+    .catch(err => {
+      console.error('Error:', err);
+      showMessage('Error uploading resume', 'error');
+    });
+  }
+
+  // ============ RESET FORM ============
+  function resetForm() {
+    selectedFile = null;
+    document.getElementById('resumeInput').value = '';
+  }
+
+  // ============ SHOW MESSAGE ============
+  function showMessage(msg, type) {
+    const messageEl = document.getElementById('message');
+    messageEl.textContent = msg;
+    messageEl.className = `message ${type} show`;
+    setTimeout(() => {
+      messageEl.classList.remove('show');
+    }, 3000);
+  }
+
+  // ============ LOGOUT ============
+  function logout() {
+    localStorage.clear();
+    window.location.href = 'login.html';
+  }
+
+  // Load profile on page load
+  window.addEventListener('load', loadProfile);
+</script>
+
+</body>
+</html>

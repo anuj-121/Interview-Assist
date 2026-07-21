@@ -1,35 +1,93 @@
-const User = require("../models/User");
+const db = require("../config/db");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-// Register
+const JWT_SECRET = process.env.JWT_SECRET || "InterviewAssistSecretKey";
+
+// ================= REGISTER =================
 exports.register = async (req, res) => {
-  const { name, email, password } = req.body;
+  try {
+    console.log('REGISTER BODY:', req.body);
+    const { name, email, password } = req.body;
 
-  const hashed = await bcrypt.hash(password, 10);
+    if (!name || !email || !password) {
+      return res.status(400).json({ success: false, message: 'Missing required fields' });
+    }
 
-  await User.create({ name, email, password: hashed });
+    const [existing] = await db.promise().query(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
 
-  res.json({ success: true, message: "Registered successfully" });
+    if (existing.length > 0) {
+      return res.json({
+        success: false,
+        message: "User already exists ❌"
+      });
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+
+    await db.promise().query(
+      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+      [name, email, hashed]
+    );
+
+    res.json({
+      success: true,
+      message: "Registered successfully ✅"
+    });
+
+  } catch (err) {
+    console.error("REGISTER ERROR:", err);
+    res.status(500).json({ success: false, message: err.message, stack: err.stack });
+  }
 };
 
-// Login
+
+// ================= LOGIN =================
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+    const [users] = await db.promise().query(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
 
-  if (!user) {
-    return res.status(401).json({ message: "Invalid credentials" });
+    if (users.length === 0) {
+      return res.json({
+        success: false,
+        message: "Invalid credentials ❌"
+      });
+    }
+
+    const user = users[0];
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
+      return res.json({
+        success: false,
+        message: "Invalid credentials ❌"
+      });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email, name: user.name },
+      JWT_SECRET,
+      { expiresIn: "4h" }
+    );
+
+    res.json({
+      success: true,
+      userId: user.id,
+      name: user.name,
+      email: user.email,
+      token
+    });
+
+  } catch (err) {
+    console.error("LOGIN ERROR:", err);
+    res.status(500).json({ success: false, message: err.message });
   }
-
-  const match = await bcrypt.compare(password, user.password);
-
-  if (!match) {
-    return res.status(401).json({ message: "Invalid credentials" });
-  }
-
-  res.json({
-    success: true,
-    userId: user._id
-  });
 };

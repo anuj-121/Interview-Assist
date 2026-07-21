@@ -123,10 +123,12 @@ th{
 
 tbody tr{
   border-bottom:1px solid #e5e7eb;
-  transition:.25s;
+  transition: all 0.3s ease;
 }
 tbody tr:hover{
   background:#f5f3ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .result-pass{ color:#16a34a; font-weight:600; }
@@ -152,7 +154,64 @@ tbody tr:hover{
   table{font-size:13px}
   th,td{padding:12px 8px}
 }
+
+/* ================= PROFILE MENU ================= */
+.profile-menu{
+  position:relative;
+}
+.profile-dropdown{
+  position:absolute;
+  top:120%;
+  right:0;
+  background:#fff;
+  padding:12px;
+  border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+  display:none;
+  min-width:120px;
+  text-align:center;
+}
+.profile-menu:hover .profile-dropdown{
+  display:block;
+}
+.profile-dropdown a,
+.profile-dropdown button{
+  display:block;
+  width:100%;
+  padding:8px 16px;
+  margin-bottom:4px;
+  border-radius:6px;
+  cursor:pointer;
+  text-decoration:none;
+  border:none;
+  font-weight:600;
+  transition:0.3s;
+}
+.profile-dropdown a{
+  background:#7c3aed;
+  color:#fff;
+}
+.profile-dropdown a:hover{
+  background:#6d28d9;
+}
+.profile-dropdown button{
+  background:#dc2626;
+  color:#fff;
+}
+.profile-dropdown button:hover{
+  background:#b91c1c;
+}
+
+@keyframes rowFadeIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.row-animate {
+  opacity: 0;
+  animation: rowFadeIn 0.5s ease forwards;
+}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -166,15 +225,17 @@ tbody tr:hover{
       <span>InterviewAssist</span>
     </div>
 
-    <ul class="nav-links">
+        <ul class="nav-links">
       <li><a href="dashboard.html">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#features">Features</a></li>
-      <li><a href="#howItWorks">How It Works</a></li>
       <li><a href="setup.html">Interview</a></li>
-      <li><a href="result.html">Results</a></li>
-      <li><a href="#developer">Developer</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="history.html">History</a></li>
+      <li class="profile-menu">
+        <a href="#"><i class="fas fa-user-circle" style="font-size:18px;"></i></a>
+        <div class="profile-dropdown">
+          <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+          <button onclick="logout()">Logout</button>
+        </div>
+      </li>
     </ul>
 
   </div>
@@ -204,7 +265,7 @@ tbody tr:hover{
     </thead>
 
     <tbody>
-      <tr>
+      <tr class="row-animate" style="animation-delay: 0s">
         <td>Java</td>
         <td>Technical</td>
         <td>Medium</td>
@@ -215,7 +276,7 @@ tbody tr:hover{
         <td><button class="view-btn" onclick="viewResult(1)">View</button></td>
       </tr>
 
-      <tr>
+      <tr class="row-animate" style="animation-delay: 0.1s">
         <td>DSA</td>
         <td>Technical</td>
         <td>Hard</td>
@@ -226,7 +287,7 @@ tbody tr:hover{
         <td><button class="view-btn" onclick="viewResult(2)">View</button></td>
       </tr>
 
-      <tr>
+      <tr class="row-animate" style="animation-delay: 0.2s">
         <td>HR + Technical</td>
         <td>Mixed</td>
         <td>Easy</td>
@@ -239,13 +300,83 @@ tbody tr:hover{
     </tbody>
   </table>
 </div>
-
 <script>
+
+// ================= LOAD HISTORY =================
+window.onload = async function(){
+
+  const userId = localStorage.getItem("userId");
+
+  if(!userId){
+    alert("Please login first ❌");
+    window.location.href = "login.html";
+    return;
+  }
+
+  try{
+    const token = localStorage.getItem("token");
+    const res = await fetch(`http://localhost:5000/api/interview/history`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = await res.json();
+
+    if(!data.success){
+      alert("Failed to load history ❌");
+      return;
+    }
+
+    const tbody = document.querySelector("tbody");
+    tbody.innerHTML = ""; // clear dummy data
+
+    data.history.forEach((item, index) => {
+
+      // 🎯 result color
+      let resultClass = "result-pass";
+      if(item.score < 60) resultClass = "result-fail";
+      else if(item.score < 75) resultClass = "result-average";
+
+      const dateObj = new Date(item.created_at || item.date || Date.now());
+
+      const row = `
+        <tr class="row-animate" style="animation-delay: ${index * 0.1}s">
+          <td>${item.subject}</td>
+          <td>Technical</td>
+          <td>${item.difficulty || "Medium"}</td>
+          <td>20 mins</td>
+          <td>${dateObj.toLocaleDateString()}</td>
+          <td>${dateObj.toLocaleTimeString()}</td>
+          <td class="${resultClass}">${item.score}%</td>
+          <td>
+            <button class="view-btn" onclick="viewResult('${item.id}')">View</button>
+          </td>
+        </tr>
+      `;
+
+      tbody.innerHTML += row;
+    });
+
+  } catch(err){
+    console.error(err);
+    alert("Server error ❌");
+  }
+};
+
+
+// ================= VIEW RESULT =================
 function viewResult(id){
-  // later backend id pass करू
+
+  // DB based
+  localStorage.setItem("selectedInterviewId", id);
   window.location.href = "result.html";
 }
-</script>
 
+
+/* ================= LOGOUT ================= */
+function logout(){
+  localStorage.removeItem("userId");
+  window.location.href = "login.html";
+}
+
+</script>
 </body>
 </html>
