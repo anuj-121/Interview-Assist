@@ -14,7 +14,8 @@ The platform generates interview questions, records interview history, and provi
 
 ### ⚙️ Interview Setup
 
-![Interview Setup](./screenshots/interview-setup.png)
+![Interview Setup](./screenshots/interview-setup1.png)
+![Interview Setup](./screenshots/interview-setup2.png)
 
 ### 🎤 Live AI Interview
 
