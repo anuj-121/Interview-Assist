@@ -7,7 +7,6 @@ The platform generates interview questions, records interview history, and provi
 ---
 
 ## 📸 Application Screenshots
-
 ### 🏠 Home Page
 
 ![Home Page](./screenshots/home.png)
