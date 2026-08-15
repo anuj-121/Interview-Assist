@@ -1,3 +1,4 @@
+
 # 🎤 Interview Assist AI
 
 An AI-powered web application that simulates real technical interviews, helping students practice, improve communication skills, and prepare confidently for campus placements and software engineering interviews.
