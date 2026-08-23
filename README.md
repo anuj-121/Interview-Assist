@@ -5,7 +5,7 @@ An AI-powered web application that simulates real technical interviews, helping 
 
 The platform generates interview questions, records interview history, and provides an interactive interview experience with a clean, responsive interface.
 
----
+--- 
  
 ## 📸 Application Screenshots
 ### 🏠 Home Page
